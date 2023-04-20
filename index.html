@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: rgb(11, 11, 11);
+            box-sizing: border-box;
+        }
+
+        .navbar {
+            color: rgb(255, 255, 255);
+            letter-spacing: 0.2mm;
+            font-size: 60px;
+            margin: 10px;
+            text-align: center;
+        }
+
+        /* common css */
+        .main_heading {
+            font-family: 'Roboto', sans-serif;
+            letter-spacing: 0.3mm;
+            color: wheat;
+            text-align: center;
+            font-size: 55px;
+            margin: 15px 0px;
+        }
+
+        #output_frame {
+            display: block;
+            background-color: white;
+            border: none;
+            word-wrap: break-word;
+            width: 95vw;
+            height: 80vh;
+            margin: 20px auto;
+        }
+
+
+        @media (max-width: 400px) {
+            .navbar {
+                font-size: 40px;
+            }
+
+            .main_heading {
+                font-size: 35px;
+            }
+        }
+    </style>
+    <title>Text Editer</title>
+</head>
+
+<body>
+    <nav class="navbar">
+        Rapid Coders
+    </nav>
+    <!-- heading -->
+    <h1 class="main_heading">Text Editor</h1>
+    <!-- Text editor -->
+    <textarea name="text_editor" id="text_editor"> <h1>i am done</h1> </textarea>
+
+    <h1 class="main_heading">Output</h1>
+    <iframe srcdoc= " <p>Output of Editor</p> " title="Output" id="output_frame"></iframe>
+
+
+
+
+<script src="ckeditor.js"></script>
+<script>
+    // convert text area into text editor
+    ClassicEditor.create(document.querySelector('#text_editor')).then(editor => { console.log(editor); }).catch(error => {
+        console.error(error);
+    });
+
+    // function to change content of frame with respect to editor
+    function update_frame(event) {
+        let str =  `
+        <style> 
+         a {
+            color: grey;
+            text-decoration: none;
+            border-bottom: 1px solid grey;
+        }
+        a:hover {
+            cursor: pointer;
+            pointer-events: none ;
+        }
+
+        h1 {
+            padding: 10px 0px;
+            font-size: 45px;
+        }
+
+        h2 {
+            padding: 8px 0px;
+            font-size: 32px;
+        }
+
+        h3 {
+            padding: 6px 0px;
+            font-size: 28px;
+        }
+
+        p,div {
+            line-height: 28px;
+            padding: 4px 0px;
+            font-size: 18px;
+        }
+
+        span {
+            font-size: 20px;
+        }
+
+        img {
+            padding: 10px 0px;
+            max-width: 100%;
+            display: block;
+            margin: auto;
+        }
+
+        .ck-widget__type-around, .ck-widget__selection-handle{
+            display : none;
+        }
+
+        ol,
+        ul {
+            padding: 5px 0px;
+            font-size: 20px;
+            padding-left: 25px;
+        }
+
+        li {
+            color: black;
+        }
+
+        pre {
+            border-radius: 3px;
+            padding: 5px 10px 10px 10px;
+            margin: 5px 0px;
+            background-color: rgb(56, 56, 56);
+            overflow: auto;
+            color : white;
+        }
+
+        table, td, th {
+            border: 1px solid black;
+        }
+        th,td{
+            min-width : 50px;
+            padding : 3px 5px;
+        }
+        table{
+            border-collapse: separate;
+            border-spacing: 0px;
+        }
+        
+        </style>
+        ` + document.getElementsByClassName("ck-content")[0].innerHTML ;
+
+        document.getElementById("output_frame").srcdoc = str;
+    }
+
+    // when page loads add Event Listeners 
+    window.onload = () => {
+        document.getElementsByClassName("ck-editor")[0].style = "width : 95vw; margin : auto;";
+        document.getElementsByClassName("ck-editor__editable")[0].addEventListener("keyup", update_frame);
+        // add event listeners to buttons 
+        let btns = document.getElementsByClassName("ck-button");
+        for (let i = 0; i < btns.length; ++i) {
+            btns[i].addEventListener("click", update_frame);
+        }
+        // show content into frame on page load 
+        // update_frame();
+    }
+
+</script>
+</body>
+
+</html>
